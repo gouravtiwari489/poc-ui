@@ -1,0 +1,158 @@
+
+<div class="dashboard-height">
+	<div class="row">
+		<div class="col-sm-4"></div>
+		<div class="col-sm-4">
+			<h2 style="text-align: center;">Data Generator</h2>		
+		</div>
+		<div class="col-sm-4">
+			<h4 style="text-align: right;margin-right: 7%">
+				Hello <strong>{{this.username}} </strong><a (click)="logout()">Logout</a>
+			</h4>
+		</div>
+		
+	</div>
+	<div class="container">
+		<p><strong>{{this.idleState}}</strong></p>
+	</div>
+	
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3"></div>
+			<div class="col-sm-8">
+				<ul class="nav nav-pills">
+				  <li role="presentation" *ngFor="let step of dasProcess;let stepIndex = index">
+				  	<a title="{{step.desc}}" data-toggle="tooltip" style="margin: 0px; padding: 0px;"><img [src]=step.imgUrl (click)="moveToStep(stepIndex)"/></a>
+				  </li>
+				</ul>
+			</div>
+		</div>
+		
+		<div class="row" style="margin-bottom: 5px;margin-top: 5px;">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-8" id="message" [hidden]="successMessage === ''" style="text-align: center;">
+				<div class="alert alert-success alert-dismissible" id="successMessage" style="padding-top: 6px;padding-bottom: 6px;margin-bottom: 0px">
+					<a class="close" data-dismiss="" aria-label="close" (click)="closeMessageBox('success')">&times;</a>
+					<strong>Success!</strong>{{successMessage}}
+				</div>
+			</div>
+			<div class="col-sm-8" [hidden]="errorMessage === ''" style="text-align: center;">
+				<div class="alert alert-danger alert-dismissible" style="padding-top: 6px;padding-bottom: 6px;margin-bottom: 0px">
+					<a class="close" data-dismiss="" aria-label="close" (click)="closeMessageBox('error')">&times;</a>
+					<strong>Error!</strong> {{errorMessage}}
+				</div>
+			</div>
+			<div class="col-sm-8" [hidden]="warningMessage === ''" style="text-align: center;">
+				<div class="alert alert-warning alert-dismissible" style="padding-top: 6px;padding-bottom: 6px;margin-bottom: 0px">
+					<a class="close" data-dismiss="" aria-label="close" (click)="closeMessageBox('warning')">&times;</a>
+					<strong>Warning!</strong> {{warningMessage}} Still you want to <strong><a (click)="reUploadFile()">continue</a></strong>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row" *ngIf="dasProcess[0].active">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-8" style="background-image:url('assets/images/upload-background.jpg');box-shadow: 20px 20px 50px grey;border-radius: 15px;">
+				<h3 style="text-align: center; color: lightblue;">Upload your database model as SQL</h3>
+				<form style="padding-top: 15%;padding-bottom : 20%;">
+					<div class="form-group col-sm-2" style="padding-top: 5px;padding-left: 35px;">
+						<label for="inputFile">Input File: </label>
+					</div>
+					<div class="form-group col-sm-5" style="padding-left: 0px;">
+						<input type="file" class="form-control" id="inputFile" accept=".sql" title="choose .sql file" data-toggle="tooltip" required>
+						<div *ngIf="fileName !== null">Uploaded File Name: {{fileName}}</div>
+					</div>
+			
+					<div class="form-group col-sm-3">
+						<select class="form-control" id="domain" [(ngModel)]="domain"
+							name="domain" placeholder="select" title="select Domain" data-toggle="tooltip" required>
+							<option value="select" disabled selected>Select Domain...</option>
+							<option *ngFor="let domain of domains" [disabled]="domain.disabled" [value]="domain.value"> {{domain.desc}}</option>
+						</select>
+					</div>
+					<div class="form-group col-sm-2">
+						<button type="submit" class="btn btn-primary" title="click to ulpoad .sql file" data-toggle="tooltip"
+							(click)="uploadFile()">Upload</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		<div class="row" *ngIf="dasProcess[1].active">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-8" style="background-color:white;box-shadow: 20px 20px 50px grey;border-radius: 15px; padding-top: 5px;padding-bottom: 5px;">
+				<div class="col-sm-3 sidenav">
+					<h3>Table List</h3>
+					<ul class="nav nav-pills nav-stacked" *ngFor="let table of tableList.tables;let i = index">
+						<li><a class="table_heading active" (click)=tableClick(i)>{{table.tableName}}</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-9 scrolabble" style="font-size:12px">
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Input MetaData</th>
+								<th>Mapped MetaData</th>
+							</tr>
+						</thead>
+						<tr class="tr" *ngFor="let field of tableList.tables[selectedTableIndex].fields">
+							<td class="tr">
+								<div class="form-group col-sm-6 tableData">
+									<span>{{field.columnName}}</span>
+								</div>
+								<div class="form-group col-sm-6 tableData">
+									<input type="text" class="form-control" value={{field.dataType}} 
+									disabled="true" style="font-size:12px">
+								</div>
+							</td>
+							<td class="tr">
+								<div class="form-group col-sm-6 tableData">
+									<select class="form-control" id="{{field.columnName}}"
+											[(ngModel)]="field.mappedCategory" name="{{field.mappedCategory}}" style="font-size:12px">
+											<option *ngFor="let mappingCategory of field.mappingCategeries" [value]="mappingCategory.mappingCategory">{{mappingCategory.mappingCategory}}</option>
+									</select>
+								</div>
+								<div class="form-group col-sm-6 tableData">
+									<select class="form-control" id="{{field.columnName}}"
+											[(ngModel)]="field.mappedType" name="{{field.mappedType}}" style="font-size:12px">
+											<option *ngFor="let mappingCategory of field.mappingCategeries" [value]="mappingCategory.mappingType">{{mappingCategory.mappingType}}</option>
+									</select>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row" *ngIf="dasProcess[2].active">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-8" style="background-image:url('assets/images/download-background.png');box-shadow: 20px 20px 50px grey;border-radius: 15px;">
+				<h3 style="text-align: center; color: lightblue;">Download your File</h3>
+				<form style="padding-top: 8%; padding-bottom: 10%" #downloadForm="ngForm">
+					<div class="row">
+						<div class="col-sm-3"></div>
+			    		<div class="form-group col-sm-5">
+							<input class="form-control" type="number" min="1" max="{{maxRowCountToDownload}}" name="rowCount" [(ngModel)]="rowCount" 
+						    	placeholder="Number of Rows" title="Enter No of Rows" data-toggle="tooltip" #numRows="ngModel" (keyup)="checkRange()" required>
+							<div *ngIf="numRows?.touched">
+								<div *ngIf="numRows.errors?.required" class="alert alert-danger">Please Enter Number of Rows you want</div>
+								<div *ngIf="RowCountError" class="alert alert-danger">Row should be in range 1 to {{maxRowCountToDownload}}</div>			
+							</div>
+					 	</div>
+					 </div>
+					 <div class="row">
+					 	<div class="form-group col-sm-3"></div>
+					 	<div class="form-group col-sm-1" *ngFor="let fileType of fileTypes">
+					 		<button id="{{fileType.value}}" name="{{fileType.value}}" type="button" class="btn" style="padding: 0px;border: none;background-color: white;"
+					 			title="click to download in {{fileType.value}} format" data-toggle="tooltip"
+					 			[disabled]="RowCountError || downloadForm.invalid" (click)="downloadFile(fileType.value)">
+					 			<img src="{{fileType.imgUrl}}"/>
+					 		</button>
+					 	</div>
+					 </div>
+	   	 		</form>
+			</div>
+		</div>
+	</div>
+</div>

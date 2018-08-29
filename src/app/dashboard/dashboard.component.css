@@ -1,0 +1,76 @@
+.dashboard-height {
+	height: 94vh;
+}
+
+.input-pannel {
+	background-color: lightgray;
+	margin-bottom: 20px;
+	border-radius: 10px;
+}
+
+@import
+	url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css")
+	;
+
+.panel-title>a:before {
+	float: left !important;
+	font-family: FontAwesome;
+	content: "\f068";
+	padding-right: 5px;
+}
+
+.panel-title>a.collapsed:before {
+	float: left !important;
+	content: "\f067";
+}
+
+.panel-title>a:hover, .panel-title>a:active, .panel-title>a:focus {
+	text-decoration: none;
+}
+
+.table_heading {
+	margin-left: 2%;
+	font-family: serif;
+	font-size: 14px;
+	color: #337ab7;
+	text-transform: uppercase;
+}
+
+.row.content {
+	height: 1500px
+}
+
+/* Set gray background color and 100% height */
+.sidenav {
+	background-color: lightgray;
+	height: 400px !important;
+   	overflow-x: hidden;
+    overflow-y: scroll;
+}
+.scrolabble{
+	height: 400px !important;
+   	overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+	.sidenav {
+		height: auto;
+		padding: 15px;
+	}
+	.row.content {
+		height: auto;
+	}
+}
+.tr{
+	padding: 0px;
+    margin: 0px 0px 0px;
+    font-size: 12px;
+}
+.tableData{
+	margin-top: 2%;
+	margin-bottom: 1%;
+	font-size: 12px;
+}
+
