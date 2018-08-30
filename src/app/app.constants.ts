@@ -1,5 +1,5 @@
 export class AppConstants {
-  public static appUrl = 'http://localhost:9080/datagenerator/';
+  public static appUrl = 'http://localhost:9080/poc/';
   public static oauthRefreshUrl = 'oauth/token?grant_type=refresh_token&refresh_token=';
   public static oauthUrl = 'oauth/token?grant_type=password&username=';
   public static uploadUrl = 'upload';

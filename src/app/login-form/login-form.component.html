@@ -5,7 +5,7 @@
 			<section class="login-form">
 			
     			<form (submit)="loginUser($event)" role="login" [hidden]="!hideRegistrationForm">
-          			<img src="http://www.osius.com/wp-content/themes/osius/images/logo.png" class="img-responsive" alt="" />
+          			<img src="" class="img-responsive" alt="" />
 
 					<div class="alert alert-success alert-dismissible" [hidden]="sucessMessage === ''" id="successMessage" style="padding-top: 6px;padding-bottom: 6px;margin-bottom: 0px">
 						<a class="close" data-dismiss="" aria-label="close" (click)="closeMessageBox('error')">&times;</a>
@@ -38,8 +38,8 @@
 						<strong>Error!</strong> {{errorMessage}}
 					</div>
 					
-        			<input type= "text" name="fullName" class="form-control input-lg" [(ngModel)]="fullName" required  #fname="ngModel" 
-						minlength="4" placeholder="Enter Full Name" />
+        			<input type= "text" name="username" class="form-control input-lg" [(ngModel)]="username" required  #fname="ngModel" 
+						minlength="4" placeholder="Enter User Name" />
 					<div *ngIf="fname.invalid && (fname.dirty || fname.touched)" class="alert alert-danger">
                  		Name must be at least 4 characters long. 
 					</div>
